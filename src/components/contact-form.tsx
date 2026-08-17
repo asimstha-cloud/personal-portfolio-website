@@ -1,19 +1,13 @@
 "use client";
 
 import { Loader2, Send } from "lucide-react";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
-import { submitContactForm } from "@/lib/actions";
+import { FormEvent, useState } from "react";
 import { budgets, services } from "@/constants/site";
 import type { ContactFormState } from "@/types/contact";
 
-const initialState: ContactFormState = {
-  status: "idle",
-  message: "",
-};
+const formEndpoint = "https://formsubmit.co/ajax/asimstha.000@gmail.com";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+function SubmitButton({ pending }: { pending: boolean }) {
 
   return (
     <button
@@ -33,13 +27,89 @@ function SubmitButton() {
 }
 
 export function ContactForm() {
-  const [state, formAction] = useActionState(submitContactForm, initialState);
+  const [state, setState] = useState<ContactFormState>({
+    status: "idle",
+    message: "",
+  });
+  const [pending, setPending] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const service = String(formData.get("service") ?? "").trim();
+    const budget = String(formData.get("budget") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+
+    setState({ status: "idle", message: "" });
+
+    if (!name || !email || !service || !budget || !message) {
+      setState({
+        status: "error",
+        message: "Please complete all required fields before sending.",
+      });
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setState({
+        status: "error",
+        message: "Please enter a valid email address.",
+      });
+      return;
+    }
+
+    formData.set("_subject", "New Website Contact Request");
+    formData.set("_template", "table");
+    formData.set("_captcha", "false");
+    formData.set("_replyto", email);
+    formData.set("_honey", "");
+
+    setPending(true);
+
+    try {
+      const response = await fetch(formEndpoint, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      setState({
+        status: "success",
+        message:
+          "Thank you. Your message has been sent successfully, and Asim will respond soon.",
+      });
+      form.reset();
+    } catch {
+      setState({
+        status: "error",
+        message:
+          "Sorry, your message could not be sent right now. Please email Asim directly.",
+      });
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <form
-      action={formAction}
+      action={formEndpoint}
+      method="POST"
+      onSubmit={handleSubmit}
       className="rounded-[32px] border border-slate-200 bg-white p-5 shadow-2xl shadow-slate-200/60 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-none sm:p-8"
     >
+      <input type="hidden" name="_subject" value="New Website Contact Request" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Name" name="name" required placeholder="Your name" />
         <Field
@@ -96,7 +166,7 @@ export function ContactForm() {
       ) : null}
 
       <div className="mt-6">
-        <SubmitButton />
+        <SubmitButton pending={pending} />
       </div>
     </form>
   );

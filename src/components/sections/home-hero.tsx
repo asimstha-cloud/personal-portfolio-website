@@ -1,5 +1,4 @@
-import { ArrowRight, BarChart3, CheckCircle2, Sparkles } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { MotionDiv, MotionSection } from "@/components/motion";
 
@@ -7,6 +6,22 @@ const stats = [
   { value: "8+", label: "Years expertise" },
   { value: "12", label: "Growth services" },
   { value: "95+", label: "Performance target" },
+];
+
+const aiNodes = [
+  "left-[14%] top-[24%] size-3 bg-blue-500/80 shadow-blue-500/40",
+  "left-[28%] top-[64%] size-2.5 bg-cyan-400/80 shadow-cyan-400/40",
+  "left-[45%] top-[36%] size-3.5 bg-sky-500/80 shadow-sky-500/40",
+  "left-[61%] top-[72%] size-2.5 bg-indigo-500/80 shadow-indigo-500/40",
+  "left-[76%] top-[28%] size-3 bg-cyan-400/80 shadow-cyan-400/40",
+  "left-[86%] top-[58%] size-2 bg-blue-500/80 shadow-blue-500/40",
+];
+
+const aiLines = [
+  "left-[16%] top-[28%] w-[34%] rotate-[17deg]",
+  "left-[30%] top-[61%] w-[35%] -rotate-[33deg]",
+  "left-[46%] top-[39%] w-[33%] -rotate-[12deg]",
+  "left-[62%] top-[69%] w-[27%] rotate-[25deg]",
 ];
 
 export function HomeHero() {
@@ -84,31 +99,60 @@ export function HomeHero() {
           className="relative mx-auto w-full max-w-xl"
         >
           <div className="absolute -inset-6 rounded-[40px] bg-gradient-to-br from-blue-500/20 via-purple-500/10 to-cyan-400/20 blur-3xl" />
-          <div className="relative overflow-hidden rounded-[36px] border border-white/80 bg-white/75 p-3 shadow-2xl shadow-blue-500/15 backdrop-blur dark:border-white/10 dark:bg-white/[0.06]">
-            <Image
-              src="/asim-ai-portrait.webp"
-              alt="AI-inspired professional portrait placeholder for Asim Shrestha"
-              width={960}
-              height={1120}
-              priority
-              className="aspect-[6/7] w-full rounded-[28px] object-cover"
-            />
-            <div className="absolute bottom-6 left-6 right-6 rounded-[24px] border border-white/70 bg-white/85 p-4 shadow-xl backdrop-blur dark:border-white/10 dark:bg-slate-950/75">
-              <div className="flex items-center gap-3">
-                <div className="grid size-11 place-items-center rounded-2xl bg-blue-600 text-white">
-                  <BarChart3 className="size-5" />
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-950 dark:text-white">
-                    Growth systems with AI clarity
-                  </p>
-                  <p className="mt-1 flex items-center gap-1 text-xs text-slate-500 dark:text-slate-300">
-                    <CheckCircle2 className="size-3 text-emerald-500" />
-                    Strategy, execution, and reporting aligned
-                  </p>
-                </div>
+          <div
+            aria-hidden="true"
+            className="relative min-h-[430px] overflow-hidden rounded-[36px] border border-white/80 bg-white/65 shadow-2xl shadow-blue-500/15 backdrop-blur dark:border-white/10 dark:bg-white/[0.06] sm:min-h-[540px]"
+          >
+            <div className="absolute inset-0 ai-grid opacity-75" />
+            <div className="absolute inset-8 rounded-[30px] border border-blue-200/60 dark:border-cyan-300/10" />
+            <div className="absolute inset-16 rounded-full border border-dashed border-blue-300/50 dark:border-cyan-300/20" />
+            <div className="absolute left-1/2 top-1/2 grid size-32 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-blue-200/70 bg-white/80 shadow-2xl shadow-blue-500/20 backdrop-blur dark:border-cyan-300/20 dark:bg-slate-950/75 sm:size-40">
+              <div className="grid size-16 grid-cols-3 gap-1.5 sm:size-20">
+                {Array.from({ length: 9 }).map((_, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 opacity-80 shadow-[0_0_16px] shadow-blue-500/30"
+                  />
+                ))}
               </div>
             </div>
+            {aiLines.map((line) => (
+              <div
+                key={line}
+                className={`absolute h-px origin-left bg-gradient-to-r from-transparent via-blue-500/45 to-transparent dark:via-cyan-300/35 ${line}`}
+              />
+            ))}
+            {aiNodes.map((node, index) => (
+              <div
+                key={node}
+                className={`absolute rounded-full shadow-[0_0_28px] ${node} ${
+                  index % 2 === 0 ? "animate-pulse" : ""
+                }`}
+              />
+            ))}
+            <div className="absolute left-8 top-10 h-16 w-28 rounded-2xl border border-white/80 bg-white/45 shadow-lg backdrop-blur dark:border-white/10 dark:bg-slate-950/45" />
+            <div className="absolute bottom-10 right-8 h-16 w-32 rounded-2xl border border-white/80 bg-white/45 shadow-lg backdrop-blur dark:border-white/10 dark:bg-slate-950/45" />
+            <div className="absolute bottom-10 left-8 h-12 w-24 rounded-2xl border border-white/80 bg-white/45 shadow-lg backdrop-blur dark:border-white/10 dark:bg-slate-950/45" />
+            <div className="absolute right-10 top-12 flex gap-2">
+              <span className="size-2 rounded-full bg-blue-500/70 shadow-[0_0_18px] shadow-blue-500/40" />
+              <span className="size-2 rounded-full bg-cyan-400/70 shadow-[0_0_18px] shadow-cyan-400/40" />
+              <span className="size-2 rounded-full bg-indigo-500/70 shadow-[0_0_18px] shadow-indigo-500/40" />
+            </div>
+            <div className="absolute left-1/2 top-1/2 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-300/20 dark:border-cyan-300/10" />
+            <div className="absolute left-1/2 top-1/2 size-80 -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-300/10 dark:border-cyan-300/10" />
+            <div className="absolute inset-x-10 top-1/2 h-px bg-gradient-to-r from-transparent via-blue-500/25 to-transparent dark:via-cyan-300/20" />
+            <div className="absolute inset-y-10 left-1/2 w-px bg-gradient-to-b from-transparent via-blue-500/25 to-transparent dark:via-cyan-300/20" />
+            <div className="absolute right-12 top-1/2 flex -translate-y-1/2 flex-col gap-2">
+              <span className="h-8 w-1 rounded-full bg-blue-500/35" />
+              <span className="h-12 w-1 rounded-full bg-cyan-400/45" />
+              <span className="h-6 w-1 rounded-full bg-indigo-500/35" />
+            </div>
+            <div className="absolute left-12 top-1/2 flex -translate-y-1/2 flex-col gap-2">
+              <span className="h-6 w-1 rounded-full bg-indigo-500/35" />
+              <span className="h-12 w-1 rounded-full bg-blue-500/35" />
+              <span className="h-8 w-1 rounded-full bg-cyan-400/45" />
+            </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,transparent_42%,rgba(255,255,255,0.55)_100%)] dark:bg-[radial-gradient(circle_at_50%_50%,transparent_0%,transparent_46%,rgba(2,6,23,0.72)_100%)]" />
           </div>
         </MotionDiv>
       </div>

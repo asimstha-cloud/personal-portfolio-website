@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -16,17 +17,22 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/75">
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="Home">
-          <span className="grid size-10 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-400 text-sm font-bold text-white shadow-lg shadow-blue-500/20">
-            AS
-          </span>
-          <span className="leading-tight">
-            <span className="block text-sm font-semibold text-slate-950 dark:text-white">
-              {siteConfig.name}
-            </span>
-            <span className="block text-xs text-slate-500 dark:text-slate-400">
-              AI Marketing Consultant
-            </span>
-          </span>
+          <Image
+            src="/asim-tech-light.png"
+            alt={siteConfig.name}
+            width={212}
+            height={40}
+            className="h-10 w-auto dark:hidden"
+            priority
+          />
+          <Image
+            src="/asim-tech-dark.png"
+            alt={siteConfig.name}
+            width={212}
+            height={40}
+            className="hidden h-10 w-auto dark:block"
+            priority
+          />
         </Link>
 
         <div className="hidden items-center gap-1 rounded-full border border-slate-200 bg-white/70 p-1 shadow-sm dark:border-white/10 dark:bg-white/5 md:flex">
